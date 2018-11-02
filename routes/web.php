@@ -53,4 +53,5 @@ Route::post('pin/edit/{id}', 'PinjamkblController@update');
 	//Pengembalian
 Route::resource('pengembalian', 'PengembalianController');
 Route::get('pen_json', 'PengembalianController@json');
+Route::post('add_pen', 'PengembalianController@store');
 });

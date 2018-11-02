@@ -82,6 +82,10 @@ class PinjamkblController extends Controller
             $data->tglpjm = $request->tglpjm;
             $data->tglhrskbl = $request->tglhrskbl;
             $data->save();
+
+            $stock = Buku::where('id', $data->id_buku)->first();
+            $stock->tersedia = $stock->tersedia - 1;
+            $stock->save();
             return response()->json(['success'=>true]);
     }
 

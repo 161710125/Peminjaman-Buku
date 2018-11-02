@@ -58,7 +58,40 @@ class PengembalianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'nopjkb' => 'required',
+            'id_agt' => 'required',
+            'id_buku' => 'required',
+            'tglhrskbl' => 'required',
+        ],[
+            'nopjkb.required' => ':Attribute  Tidak Boleh Kosong',
+            'id_buku.required' => ':Attribute  Tidak Boleh Kosong',
+            'id_agt.required' => ':Attribute  Tidak Boleh Kosong',
+            'tglhrskbl.required' => ':Attribute  Tidak Boleh Kosong',
+        ]);
+        $data = new pinjamkbl;
+        $karbon = Carbon::now();
+        $data->nopjkb = $request->nopjkb;
+        $data->id_buku = $request->id_buku;
+        $data->tglpjm = $request->tglpjm;
+        $data->id_agt = $request->id_agt;
+        $data->tglhrskbl = Carbon::now()->addDays(2)->format('Y-m-d');
+        $data->tglkbl = $request->tglkbl;
+
+        // $awal = new Carbon($request->tglhrskbl);
+        // $akhir = new Carbon($request->tglkbl);
+        // $hasil= "{$awal->diffInDays($akhir)}";
+        // $data->denda= $hasil * 2000;
+
+        if($data->tglkbl > $data->tglhrskbl){
+        $tanggal= date('d',strtotime($data->tglkbl));
+        $kembali= date('d',strtotime($data->tglhrskbl));
+        $all = $tanggal - $kembali;
+        $data->denda= 2000;
+        $data->denda = $data->denda*$all;
+        }
+        $data->save();
+        return response()->json(['success'=>true]);
     }
 
     /**

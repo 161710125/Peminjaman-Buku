@@ -50,13 +50,13 @@
   </div>
       @endsection
       @push('scripts')
-      @include('pinjam.form')
+      @include('pengembalian.form')
       <script type="text/javascript">
          $(function() {
          $('#stud').DataTable({
          processing: true,
          serverSide: true,
-         ajax: '/pin_json',
+         ajax: '/pen_json',
          columns: [
             { data: 'id', name: 'id' },
             { data: 'nopjkb', name: 'nopjkb' },
@@ -95,7 +95,7 @@
              if (state == 'insert'){
              $.ajax({
                type: "POST",
-               url: "{{url ('/add_pin')}}",
+               url: "{{url ('/add_pen')}}",
                // data: $('#sup_form').serialize(),
                data: new FormData(this),
                contentType: false,
