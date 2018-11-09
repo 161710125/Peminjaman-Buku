@@ -161,6 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -212,6 +213,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Laratrust' => Laratrust\LaratrustFacade::class,
         'DataTables' => Yajra\DataTables\DataTables::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

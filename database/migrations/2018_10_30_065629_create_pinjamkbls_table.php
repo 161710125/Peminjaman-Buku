@@ -22,8 +22,8 @@ class CreatePinjamkblsTable extends Migration
             $table->foreign('id_buku')->references('id')->on('bukus')->onUpdate('cascade')->onDelete('cascade');
             $table->date('tglpjm');
             $table->date('tglhrskbl');
-            $table->date('tglkbl');
-            $table->double('denda');
+            $table->date('tglkbl')->nullable();
+            $table->double('denda')->nullable();
             $table->timestamps();
         });
     }

@@ -9,6 +9,7 @@ use Yajra\DataTables\DataTables;
 use App\buku;
 use App\anggota;
 use Carbon\Carbon;
+use Excel;
 
 class PinjamkblController extends Controller
 {
@@ -19,7 +20,7 @@ class PinjamkblController extends Controller
      */
 
     public function json(){
-        $data = pinjamkbl::all();
+        $data = pinjamkbl::where('tglkbl','=',null)->get();
         return DataTables::of($data)
 
         ->addColumn('buku',function($data){
@@ -36,10 +37,22 @@ class PinjamkblController extends Controller
         ->rawColumns(['action','buku','anggota'])->make(true);
     }
 
+    public function downloadExcel($type)
+    {
+        $data = pinjamkbl::get()->toArray();
+            
+        return Excel::create('data_pengembalian', function($excel) use ($data) {
+            $excel->sheet('mySheet', function($sheet) use ($data)
+            {
+                $sheet->fromArray($data);
+            });
+        })->download($type);
+    }
+
     public function index()
     {
         $pinjam = pinjamkbl::all();
-        $anggota = anggota::all();
+        $anggota = anggota::where('status','=',0)->get();
         $buku = buku::all();
         return view('pinjam.index', compact('pinjam','anggota','buku'));
     }
@@ -82,6 +95,10 @@ class PinjamkblController extends Controller
             $data->tglpjm = $request->tglpjm;
             $data->tglhrskbl = $request->tglhrskbl;
             $data->save();
+
+            $agt = anggota::where('id',$data->id_agt)->first();
+            $agt->status = $agt->status + 1;
+            $agt->save();
 
             $stock = Buku::where('id', $data->id_buku)->first();
             $stock->tersedia = $stock->tersedia - 1;

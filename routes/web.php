@@ -12,17 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); 
 });
  
 Auth::routes(); 
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-
-
-Auth::routes();
-Route::group(['prefix'=>'/','middleware'=>['auth','role:admin|role:member']], function(){
+Route::group(['prefix'=>'/','middleware'=>['auth','role:admin|member']], function(){
 	// Jenis Buku
 Route::resource('jenis', 'JnbukuController');
 Route::get('jn_json', 'JnbukuController@json');
@@ -53,5 +49,10 @@ Route::post('pin/edit/{id}', 'PinjamkblController@update');
 	//Pengembalian
 Route::resource('pengembalian', 'PengembalianController');
 Route::get('pen_json', 'PengembalianController@json');
+Route::get('myform/ajax/{id}','PengembalianController@ajax');
 Route::post('add_pen', 'PengembalianController@store');
+Route::post('/kembali/edit/{id}', 'PengembalianController@update');
+Route::get('kembali/getedit/{id}', 'PengembalianController@edit');
+	//Add-Ons
+Route::get('downloadExcel/{type}', 'PinjamkblController@downloadExcel');
 });
